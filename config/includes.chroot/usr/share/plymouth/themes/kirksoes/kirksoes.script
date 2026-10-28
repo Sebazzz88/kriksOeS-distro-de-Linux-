@@ -1,0 +1,19 @@
+Window.SetBackgroundTopColor(0.04, 0.03, 0.02);
+Window.SetBackgroundBottomColor(0.10, 0.07, 0.03);
+
+logo.image = Image("logo.png");
+logo.sprite = Sprite(logo.image);
+logo.sprite.SetX(Window.GetWidth() / 2 - logo.image.GetWidth() / 2);
+logo.sprite.SetY(Window.GetHeight() / 2 - logo.image.GetHeight() / 2 - 30);
+
+title.image = Image.Text("kirksOeS", 0.96, 0.77, 0.43, 1, "Sans Bold 28");
+title.sprite = Sprite(title.image);
+title.sprite.SetX(Window.GetWidth() / 2 - title.image.GetWidth() / 2);
+title.sprite.SetY(Window.GetHeight() / 2 + logo.image.GetHeight() / 2 - 10);
+
+fun refresh_callback() {
+  t++;
+  title.sprite.SetOpacity(0.6 + 0.4 * Math.Sin(t / 15));
+}
+t = 0;
+Plymouth.SetRefreshFunction(refresh_callback);

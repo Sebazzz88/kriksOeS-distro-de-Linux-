@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=kirksOeS
+Description=Splash de arranque de kirksOeS
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/kirksoes
+ScriptFile=/usr/share/plymouth/themes/kirksoes/kirksoes.script

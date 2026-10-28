@@ -1,0 +1,12 @@
+#!/bin/sh
+# Pone el wallpaper de kirksOeS en todos los monitores de XFCE.
+WP=/usr/share/kirksoes/wallpaper.png
+sleep 3
+props=$(xfconf-query -c xfce4-desktop -l 2>/dev/null | grep -E 'last-image$')
+if [ -z "$props" ]; then
+  for m in monitor0 monitorVirtual-1 monitorVirtual1 monitoreDP-1 monitorHDMI-1 monitorLVDS-1; do
+    xfconf-query -c xfce4-desktop -p "/backdrop/screen0/$m/workspace0/last-image" -n -t string -s "$WP"
+  done
+else
+  for p in $props; do xfconf-query -c xfce4-desktop -p "$p" -s "$WP"; done
+fi

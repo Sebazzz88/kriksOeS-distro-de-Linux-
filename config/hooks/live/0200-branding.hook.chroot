@@ -1,0 +1,46 @@
+#!/bin/sh
+set -e
+REPO="https://github.com/Sebazzz88/kriksOeS-distro-de-Linux-"
+
+# Identidad del sistema (ID=debian se mantiene para compatibilidad con apt)
+cat > /etc/os-release <<EOF
+PRETTY_NAME="kirksOeS (Debian 13 trixie)"
+NAME="kirksOeS"
+VERSION_ID="13"
+VERSION="13 (trixie)"
+VERSION_CODENAME=trixie
+ID=debian
+HOME_URL="$REPO"
+BUG_REPORT_URL="$REPO/issues"
+EOF
+rm -f /usr/lib/os-release && cp /etc/os-release /usr/lib/os-release
+printf 'kirksOeS \\n \\l\n\n' > /etc/issue
+echo 'kirksOeS' > /etc/issue.net
+printf '\n  kirksOeS - pentesting // ctf\n  %s\n\n' "$REPO" > /etc/motd
+
+# Wallpaper por defecto
+WP=/usr/share/kirksoes/wallpaper.png
+for f in /usr/share/images/desktop-base/default \
+         /usr/share/images/desktop-base/desktop-background \
+         /usr/share/backgrounds/xfce/*; do
+  [ -e "$f" ] && ln -sf "$WP" "$f"
+done
+
+# Iconos
+mkdir -p /usr/share/icons/hicolor/256x256/apps /usr/share/icons/hicolor/512x512/apps
+cp /usr/share/kirksoes/icon.png /usr/share/icons/hicolor/256x256/apps/kirksoes.png
+cp /usr/share/kirksoes/logo.png /usr/share/icons/hicolor/512x512/apps/kirksoes.png
+gtk-update-icon-cache -f /usr/share/icons/hicolor 2>/dev/null || true
+
+# Wireshark sin root para el usuario live
+echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections
+dpkg-reconfigure -f noninteractive wireshark-common 2>/dev/null || true
+mkdir -p /etc/live/config.conf.d
+echo 'LIVE_USER_DEFAULT_GROUPS="audio cdrom dip floppy video plugdev netdev powerdev scanner bluetooth wireshark sudo"' \
+  > /etc/live/config.conf.d/kirksoes.conf
+
+# Splash de arranque (Plymouth)
+if command -v plymouth-set-default-theme >/dev/null; then
+  plymouth-set-default-theme kirksoes || true
+fi
+update-initramfs -u -k all || true

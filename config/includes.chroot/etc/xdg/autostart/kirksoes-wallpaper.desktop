@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=kirksOeS wallpaper
+Exec=/usr/local/bin/kirksoes-wallpaper
+OnlyShowIn=XFCE;
+NoDisplay=true
