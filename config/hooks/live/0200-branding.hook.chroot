@@ -39,6 +39,16 @@ dpkg-reconfigure -f noninteractive wireshark-common 2>/dev/null || true
 # live falla y queda SIN contraseña (login imposible). Los creamos antes.
 for g in wireshark vboxsf autologin; do groupadd -f "$g"; done
 
+# Usuario live creado en el build (no depender de live-config en el arranque).
+# Contraseña: live (hash DES estándar de Debian Live).
+if ! id kirk >/dev/null 2>&1; then
+  useradd -m -s /bin/bash -c kirk kirk
+fi
+echo 'kirk:8Ab05sVQ4LLps' | chpasswd -e
+for g in audio cdrom dip floppy video plugdev netdev wireshark sudo vboxsf autologin; do
+  getent group "$g" >/dev/null && usermod -aG "$g" kirk
+done
+
 mkdir -p /etc/live/config.conf.d
 echo 'LIVE_USER_DEFAULT_GROUPS="audio cdrom dip floppy video plugdev netdev powerdev scanner bluetooth wireshark sudo vboxsf autologin"' \
   > /etc/live/config.conf.d/kirksoes.conf
