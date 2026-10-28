@@ -36,8 +36,11 @@ gtk-update-icon-cache -f /usr/share/icons/hicolor 2>/dev/null || true
 echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections
 dpkg-reconfigure -f noninteractive wireshark-common 2>/dev/null || true
 mkdir -p /etc/live/config.conf.d
-echo 'LIVE_USER_DEFAULT_GROUPS="audio cdrom dip floppy video plugdev netdev powerdev scanner bluetooth wireshark sudo vboxsf"' \
+echo 'LIVE_USER_DEFAULT_GROUPS="audio cdrom dip floppy video plugdev netdev powerdev scanner bluetooth wireshark sudo vboxsf autologin"' \
   > /etc/live/config.conf.d/kirksoes.conf
+
+# Autologin de LightDM: el usuario live entra directo al escritorio
+groupadd -f autologin
 
 # Splash de arranque (Plymouth)
 if command -v plymouth-set-default-theme >/dev/null; then
