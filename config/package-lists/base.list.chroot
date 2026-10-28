@@ -5,6 +5,7 @@
 live-boot
 live-config
 live-config-systemd
+user-setup
 systemd-sysv
 linux-image-amd64
 sudo
