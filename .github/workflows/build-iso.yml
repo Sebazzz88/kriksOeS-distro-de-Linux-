@@ -47,10 +47,9 @@ jobs:
         if: failure()
         run: |
           if [ -f build.log ]; then
-            echo "===== ÚLTIMAS LÍNEAS ====="; tail -40 build.log
-            echo "===== ERRORES ====="
-            grep -inE 'E: |error|failed|cannot|no such|not found|P: Begin|aborting' build.log \
-              | tail -15 | while IFS= read -r l; do echo "::error::$l"; done
+            echo "===== ÚLTIMAS 60 LÍNEAS ====="; tail -60 build.log
+            echo "===== COMO ANOTACIONES ====="
+            tail -30 build.log | while IFS= read -r l; do echo "::error::$l"; done
           else
             echo "::error::no se generó build.log (falló antes de lb build)"
           fi
