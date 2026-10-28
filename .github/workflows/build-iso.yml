@@ -43,6 +43,18 @@ jobs:
           path: build.log
           if-no-files-found: ignore
 
+      - name: Mostrar errores del log si falla
+        if: failure()
+        run: |
+          if [ -f build.log ]; then
+            echo "===== ÚLTIMAS LÍNEAS ====="; tail -40 build.log
+            echo "===== ERRORES ====="
+            grep -inE 'E: |error|failed|cannot|no such|not found|P: Begin|aborting' build.log \
+              | tail -15 | while IFS= read -r l; do echo "::error::$l"; done
+          else
+            echo "::error::no se generó build.log (falló antes de lb build)"
+          fi
+
       - name: Revisar tamaño (límite de GitHub Releases = 2 GB)
         run: |
           SIZE=$(stat -c %s out/*.iso)

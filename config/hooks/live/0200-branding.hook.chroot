@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+# Sin 'set -e': el branding nunca debe abortar el build por un archivo que falte.
 REPO="https://github.com/Sebazzz88/kriksOeS-distro-de-Linux-"
 
 # Identidad del sistema (ID=debian se mantiene para compatibilidad con apt)
@@ -28,8 +28,8 @@ done
 
 # Iconos
 mkdir -p /usr/share/icons/hicolor/256x256/apps /usr/share/icons/hicolor/512x512/apps
-cp /usr/share/kirksoes/icon.png /usr/share/icons/hicolor/256x256/apps/kirksoes.png
-cp /usr/share/kirksoes/logo.png /usr/share/icons/hicolor/512x512/apps/kirksoes.png
+cp /usr/share/kirksoes/icon.png /usr/share/icons/hicolor/256x256/apps/kirksoes.png 2>/dev/null || true
+cp /usr/share/kirksoes/logo.png /usr/share/icons/hicolor/512x512/apps/kirksoes.png 2>/dev/null || true
 gtk-update-icon-cache -f /usr/share/icons/hicolor 2>/dev/null || true
 
 # Wireshark sin root para el usuario live
