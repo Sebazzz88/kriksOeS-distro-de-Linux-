@@ -1,0 +1,25 @@
+#!/bin/sh
+# Soporte para máquinas virtuales (VirtualBox, VMware, QEMU/KVM).
+# Si algo no está disponible, se salta sin romper el build.
+export DEBIAN_FRONTEND=noninteractive
+
+# VMware y QEMU/KVM (repos oficiales de Debian)
+for pkg in open-vm-tools open-vm-tools-desktop spice-vdagent qemu-guest-agent; do
+  apt-get install -y --no-install-recommends "$pkg" >/dev/null 2>&1 \
+    && echo "[kirksOeS] instalado: $pkg" || echo "[kirksOeS] no disponible: $pkg"
+done
+
+# VirtualBox Guest Additions (vienen del repo fasttrack de Debian)
+if apt-get install -y fasttrack-archive-keyring >/dev/null 2>&1; then
+  cat > /etc/apt/sources.list.d/fasttrack.list <<'EOF'
+deb https://fasttrack.debian.net/debian-fasttrack/ trixie-fasttrack main contrib
+deb https://fasttrack.debian.net/debian-fasttrack/ trixie-backports-staging main contrib
+EOF
+  apt-get update >/dev/null 2>&1
+  for pkg in virtualbox-guest-utils virtualbox-guest-x11; do
+    apt-get install -y --no-install-recommends "$pkg" >/dev/null 2>&1 \
+      && echo "[kirksOeS] instalado: $pkg" || echo "[kirksOeS] no disponible: $pkg"
+  done
+fi
+
+apt-get clean

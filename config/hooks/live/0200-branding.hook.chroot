@@ -36,7 +36,7 @@ gtk-update-icon-cache -f /usr/share/icons/hicolor 2>/dev/null || true
 echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections
 dpkg-reconfigure -f noninteractive wireshark-common 2>/dev/null || true
 mkdir -p /etc/live/config.conf.d
-echo 'LIVE_USER_DEFAULT_GROUPS="audio cdrom dip floppy video plugdev netdev powerdev scanner bluetooth wireshark sudo"' \
+echo 'LIVE_USER_DEFAULT_GROUPS="audio cdrom dip floppy video plugdev netdev powerdev scanner bluetooth wireshark sudo vboxsf"' \
   > /etc/live/config.conf.d/kirksoes.conf
 
 # Splash de arranque (Plymouth)

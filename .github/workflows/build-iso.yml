@@ -3,6 +3,8 @@ name: Build ISO
 on:
   push:
     tags: ["v*"]
+    branches: [main]
+    paths: ["build.sh", "config/**", "branding/**", ".github/workflows/**"]
   workflow_dispatch:
 
 permissions:

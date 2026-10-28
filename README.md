@@ -24,6 +24,21 @@
 
 **Usuario:** `kirk` · **Contraseña:** `live` (tiene `sudo`).
 
+## Usarla en VirtualBox
+
+1. **Nueva** → Nombre: `kirksOeS` · ISO: el `.iso` descargado · Tipo: **Linux** · Versión: **Debian (64-bit)**.
+   Marca **"Omitir instalación desatendida"**.
+2. **Memoria:** 4096 MB (mínimo 2048) · **CPUs:** 2 o más.
+3. **Disco:** no hace falta, es live. Si quieres, deja el que propone.
+4. **Configuración → Pantalla:** controlador **VMSVGA**, 128 MB de video.
+5. **Inicia** la VM.
+
+Ya trae las Guest Additions: la pantalla se ajusta sola al tamaño de la ventana, y funcionan el portapapeles compartido (*Dispositivos → Portapapeles compartido → Bidireccional*) y las carpetas compartidas (quedan en `/media/sf_<nombre>`).
+
+Para la tarjeta Wi-Fi o adaptadores USB (aircrack-ng), conecta el adaptador en *Dispositivos → USB* (requiere el Extension Pack de VirtualBox).
+
+También trae soporte para **VMware** y **QEMU/KVM**.
+
 ## Qué trae
 
 | Categoría | Herramientas |
