@@ -38,7 +38,7 @@ for d in config/bootloaders/*/; do
 done
 grep -rl "Live system" config/bootloaders 2>/dev/null | xargs -r sed -i 's/Live system/kirksOeS Live/g'
 
-lb build
+lb build 2>&1 | tee build.log
 
 mkdir -p out
 mv ./*.iso out/

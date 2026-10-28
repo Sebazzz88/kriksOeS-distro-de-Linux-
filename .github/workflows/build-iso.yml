@@ -35,6 +35,14 @@ jobs:
           sudo chown -R "$USER" out
           ls -lh out
 
+      - name: Guardar log si falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          if-no-files-found: ignore
+
       - name: Revisar tamaño (límite de GitHub Releases = 2 GB)
         run: |
           SIZE=$(stat -c %s out/*.iso)

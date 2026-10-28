@@ -1,0 +1,55 @@
+#!/bin/sh
+# Instala escritorio, red, firmware y herramientas de pentesting.
+# Cada grupo se intenta en bloque; si el bloque falla, se reintenta
+# paquete por paquete, de modo que un nombre equivocado nunca rompe el build.
+export DEBIAN_FRONTEND=noninteractive
+
+install_group() {
+  # $1 = etiqueta, $2... = paquetes
+  label="$1"; shift
+  echo "[kirksOeS] >>> $label"
+  if apt-get install -y --no-install-recommends "$@" >/dev/null 2>&1; then
+    echo "[kirksOeS] $label: OK (en bloque)"
+  else
+    echo "[kirksOeS] $label: el bloque falló, reintentando uno por uno"
+    for p in "$@"; do
+      apt-get install -y --no-install-recommends "$p" >/dev/null 2>&1 \
+        && echo "[kirksOeS]   + $p" || echo "[kirksOeS]   - $p (no disponible)"
+    done
+  fi
+}
+
+apt-get update >/dev/null 2>&1 || true
+
+install_group "Red y firmware" \
+  network-manager network-manager-gnome wpasupplicant iw wireless-tools \
+  firmware-linux-free firmware-misc-nonfree firmware-iwlwifi firmware-realtek firmware-atheros
+
+install_group "Escritorio XFCE" \
+  xserver-xorg xinit lightdm lightdm-gtk-greeter xfce4 xfce4-terminal \
+  xfce4-whiskermenu-plugin xfce4-screenshooter xfce4-taskmanager mousepad \
+  ristretto thunar-archive-plugin xarchiver dbus-x11 polkitd \
+  adwaita-icon-theme fonts-dejavu fonts-noto-color-emoji desktop-base \
+  pulseaudio pavucontrol plymouth firefox-esr
+
+install_group "Recon y red" \
+  nmap ncat netcat-openbsd socat wireshark tshark tcpdump dnsutils whois \
+  traceroute arp-scan openssh-client openvpn
+
+install_group "Web" \
+  sqlmap curl wget
+
+install_group "Passwords" \
+  john hashcat hydra crunch
+
+install_group "Wireless" \
+  aircrack-ng
+
+install_group "Forense y CTF" \
+  binwalk foremost libimage-exiftool-perl gdb ltrace strace xxd file \
+  p7zip-full unzip
+
+install_group "Dev" \
+  git vim python3 python3-pip python3-venv python3-requests build-essential
+
+apt-get clean
